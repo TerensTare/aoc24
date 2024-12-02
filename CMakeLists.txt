@@ -8,7 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 
-add_executable(day1 day1/main.cpp)
+foreach(i RANGE 1 25)
+    if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/day${i}/")
+        add_executable("day${i}" "day${i}/main.cpp")
 
-get_target_property(day1_out day1 BINARY_DIR)
-configure_file("day1/input.txt" "${day1_out}/input.txt" COPYONLY)
+        add_custom_command(
+            TARGET "day${i}" POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_CURRENT_SOURCE_DIR}/day${i}/input.txt
+            $<TARGET_FILE_DIR:day${i}>/input.txt
+        )
+    endif()
+endforeach()

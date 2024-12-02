@@ -3,6 +3,7 @@
 
 #include <concepts>
 #include <cstdio>
+#include <cstdlib>
 
 #define aoc_define_read(type, fmt)                           \
     template <>                                              \
@@ -35,7 +36,7 @@ namespace aoc
     {
     };
 
-    struct read final
+    struct read_type final
     {
         template <typename T>
         inline operator T() const noexcept
@@ -66,6 +67,8 @@ namespace aoc
             }
         }
 
-        FILE *file = stdin;
+        FILE *file;
     };
+
+    inline read_type read(FILE *file) noexcept { return {file}; }
 }
