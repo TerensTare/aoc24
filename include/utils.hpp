@@ -4,6 +4,7 @@
 #include <concepts>
 #include <cstdio>
 #include <cstdlib>
+#include <string>
 
 #define aoc_define_read(type, fmt)                           \
     template <>                                              \
@@ -71,4 +72,23 @@ namespace aoc
     };
 
     inline read_type read(FILE *file) noexcept { return {file}; }
+
+    inline std::string read_file(char const *path) noexcept
+    {
+        auto file = fopen(path, "r");
+        if (!path)
+            fail("Cannot find file!");
+
+        fseek(file, 0, SEEK_END);
+        int len = ftell(file);
+        fseek(file, 0, SEEK_SET);
+
+        std::string buffer;
+        buffer.resize(len);
+
+        fread(buffer.data(), 1, len, file);
+        fclose(file);
+
+        return buffer;
+    }
 }
